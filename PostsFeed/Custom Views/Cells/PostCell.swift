@@ -28,13 +28,19 @@ class PostCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func set(post: Post) {
-        postTitle.text = post.title
-        postBody.text = post.body
-        postLikes.text = post.likes
-        postDate.text = post.date
+    override func layoutSubviews() {
+        //print("cell \(postBody.frame.height)")
 
-        if post.isExpanded {
+
+    }
+    
+    func set(post: PostPreview) {
+        postTitle.text = post.title
+        postBody.text = post.preview_text
+        postLikes.text = String(post.likes_count)
+        postDate.text = post.timeshamp.toDate.extract("dd MMMM")
+        
+        if let expanded = post.isExpanded, expanded {
             postBody.numberOfLines = 0
             expandButton.setTitle(ExpandButton.collapse.rawValue, for: .normal)
         } else {
@@ -42,7 +48,6 @@ class PostCell: UITableViewCell {
             expandButton.setTitle(ExpandButton.expand.rawValue, for: .normal)
         }
     }
-    
     
     @IBAction private func toggleTapped(_ sender: UIButton) {
         
@@ -54,4 +59,3 @@ class PostCell: UITableViewCell {
         expandButtonHeightAnchor.constant = 0
     }
 }
-

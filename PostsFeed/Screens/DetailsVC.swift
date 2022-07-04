@@ -8,8 +8,10 @@
 import UIKit
 
 class DetailsVC: UIViewController {
-
-    var post: Post?
+    
+    var postId: Int?
+    
+    @IBOutlet weak var postContentView: UIView!
     
     @IBOutlet private weak var postImage: UIImageView!
     @IBOutlet private weak var postTitle: UILabel!
@@ -20,9 +22,39 @@ class DetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        postTitle.text = post?.title
-        postBody.text = post?.body
-        postLikes.text = post?.likes
-        postDate.text = post?.date
+        getPost()
+    }
+    
+    func getPost() {
+        if let postId = postId {
+            NetworkManager.shared.fetch(from: .getPost(id: postId)) { (result : Result<PostDetail, ErrorMessage>) in
+                switch result {
+                case .success(let postData):
+                    
+                    let post = postData.post
+                    
+                    DispatchQueue.main.async {
+                        self.updateContent(post: post)
+                    }
+                case .failure(let errorMessage):
+                    print(errorMessage.rawValue)
+                }
+            }
+        }
+    }
+    
+    func updateContent(post: PostFull) {
+        if let url = URL(string: post.postImage) {
+            let data = try? Data(contentsOf: url)
+            self.postImage.image = UIImage(data: data!)
+        }
+        
+        self.postTitle.text = post.title
+        self.postBody.text = post.text
+        
+        self.postLikes.text = String(post.likes_count)
+        self.postDate.text = post.timeshamp.toDate.extract("dd MMMM")
+        
+        self.postContentView.isHidden = false
     }
 }

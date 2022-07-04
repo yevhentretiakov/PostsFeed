@@ -10,25 +10,55 @@ import UIKit
 class FeedVC: UIViewController {
     
     @IBOutlet private weak var feedTableView: UITableView!
+    @IBOutlet private weak var filterButton: UIBarButtonItem!
     
-    var posts: [Post] = [
-        Post(title: "Post 1", body: "Lorem ipsum is placeholder text commonly used in.", likes: "1240", date: "18 day ago"),
-        Post(title: "Post 2", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", likes: "421", date: "21 day ago")
-    ]
+    private var posts = [PostPreview]()
+    
+    private var menuItems: [UIAction] {
+        return [
+            UIAction(title: "Sort by Date", image: UIImage(systemName: "clock.arrow.circlepath")) { _ in
+                self.sortPostsByDate()
+                self.feedTableView.reloadData()
+            },
+            UIAction(title: "Sort by Likes", image: UIImage(systemName: "heart")) { _ in
+                self.sortPostsByLikes()
+                self.feedTableView.reloadData()
+            }
+        ]
+    }
+    
+    private var demoMenu: UIMenu {
+        return UIMenu(title: "Sort Options", image: nil, identifier: nil, options: [], children: menuItems)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Feed"
         
+        getFeed()
         configureFeedTableView()
+
+        filterButton.menu = demoMenu
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
+    private func getFeed() {
+        NetworkManager.shared.fetch(from: .getFeed) { (result : Result<Posts, ErrorMessage>) in
+            switch result {
+            case .success(let feed):
+                self.posts = feed.posts
+                self.sortPostsByDate()
+                DispatchQueue.main.async {
+                    self.feedTableView.reloadData()
+                }
+
+            case .failure(let errorMessage):
+                print(errorMessage.rawValue)
+            }
+        }
     }
     
-    func configureFeedTableView() {
+    private func configureFeedTableView() {
         
         feedTableView.delegate = self
         feedTableView.dataSource = self
@@ -36,15 +66,18 @@ class FeedVC: UIViewController {
         feedTableView.register(UINib.init(nibName: PostCell.reuseID, bundle: nil), forCellReuseIdentifier: PostCell.reuseID)
     }
     
-    @IBAction private func filterTapped(_ sender: UIBarButtonItem) {
-        
-        print("Filter")
+    private func sortPostsByDate() {
+        posts = posts.sorted(by: { $0.timeshamp.toDate > $1.timeshamp.toDate })
     }
     
-    @objc func expandButtonTapped(sender: UIButton) {
+    private func sortPostsByLikes() {
+        posts = posts.sorted(by: { $0.likes_count > $1.likes_count })
+    }
+    
+    @objc private func expandButtonTapped(sender: UIButton) {
         
         let tag = sender.tag
-        posts[tag].isExpanded.toggle()
+        //posts[tag].isExpanded.toggle()
         
         let indexPath = IndexPath(row: tag, section: 0)
         
@@ -69,15 +102,11 @@ extension FeedVC: UITableViewDelegate, UITableViewDataSource {
         cell.expandButton.tag = indexPath.row
         cell.expandButton.addTarget(self, action: #selector(expandButtonTapped(sender:)), for: .touchUpInside)
         
-        if indexPath.row == 0 {
-            cell.hideButton()
-        }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        
         performSegue(withIdentifier: "showDetails", sender: self)
         feedTableView.deselectRow(at: indexPath, animated: true)
     }
@@ -85,8 +114,8 @@ extension FeedVC: UITableViewDelegate, UITableViewDataSource {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? DetailsVC,
            let index = feedTableView.indexPathForSelectedRow?.row {
-            
-            destination.post = posts[index]
+            destination.postId = posts[index].postId
         }
     }
 }
+

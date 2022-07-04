@@ -7,10 +7,15 @@
 
 import Foundation
 
-struct Post {
-    var title: String
-    var body: String
-    var likes: String
-    var date: String
-    var isExpanded = false
+struct Posts: Decodable {
+    let posts: [PostPreview]
+}
+
+struct PostPreview: Decodable {
+    let postId: Int
+    let timeshamp: Int
+    let title: String
+    let preview_text: String
+    let likes_count: Int
+    var isExpanded: Bool? = false
 }
