@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="VPm-qQ-Czr" customClass="PostCell" customModule="PostsFeed" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" id="VPm-qQ-Czr" customClass="PostCell" customModule="PostsFeed" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VPm-qQ-Czr" id="zAl-QA-Q6j">
@@ -43,7 +43,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3gq-fS-tB4">
-                        <barButtonItem key="rightBarButtonItem" image="line.3.horizontal.decrease.circle" catalog="system" id="LwE-bK-xN0">
+                        <barButtonItem key="rightBarButtonItem" image="arrow.up.arrow.down" catalog="system" id="LwE-bK-xN0">
                             <color key="tintColor" name="AppDarkColor"/>
                         </barButtonItem>
                     </navigationItem>
@@ -69,7 +69,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <subviews>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ECv-kR-hcx" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="458.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XJ2-gj-GeT">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="280"/>
@@ -121,7 +121,7 @@
                                             <constraint firstItem="XJ2-gj-GeT" firstAttribute="top" secondItem="ECv-kR-hcx" secondAttribute="top" id="23I-Ki-i1R"/>
                                             <constraint firstAttribute="trailing" secondItem="An8-5O-Gpq" secondAttribute="trailing" constant="20" id="6eR-aT-Slv"/>
                                             <constraint firstItem="Quh-Y3-OmC" firstAttribute="leading" secondItem="ECv-kR-hcx" secondAttribute="leading" constant="20" id="7ZJ-fu-SiS"/>
-                                            <constraint firstAttribute="bottom" secondItem="Quh-Y3-OmC" secondAttribute="bottom" constant="50" id="BgT-cJ-Jgo"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Quh-Y3-OmC" secondAttribute="bottom" constant="50" id="BgT-cJ-Jgo"/>
                                             <constraint firstItem="An8-5O-Gpq" firstAttribute="top" secondItem="EOq-Vg-Com" secondAttribute="bottom" constant="20" id="F2T-aX-Yh3"/>
                                             <constraint firstItem="Quh-Y3-OmC" firstAttribute="top" secondItem="An8-5O-Gpq" secondAttribute="bottom" constant="20" id="KUy-gZ-Jg5"/>
                                             <constraint firstAttribute="trailing" secondItem="XJ2-gj-GeT" secondAttribute="trailing" id="LJM-h2-wql"/>
@@ -188,8 +188,8 @@
     </scenes>
     <color key="tintColor" name="AppDarkColor"/>
     <resources>
+        <image name="arrow.up.arrow.down" catalog="system" width="128" height="98"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>
-        <image name="line.3.horizontal.decrease.circle" catalog="system" width="128" height="121"/>
         <namedColor name="AppDarkColor">
             <color red="0.28627450980392155" green="0.32156862745098042" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

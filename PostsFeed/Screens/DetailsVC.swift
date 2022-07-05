@@ -11,7 +11,7 @@ class DetailsVC: UIViewController {
     
     var postId: Int?
     
-    @IBOutlet weak var postContentView: UIView!
+    @IBOutlet private weak var postContentView: UIView!
     
     @IBOutlet private weak var postImage: UIImageView!
     @IBOutlet private weak var postTitle: UILabel!
@@ -25,7 +25,7 @@ class DetailsVC: UIViewController {
         getPost()
     }
     
-    func getPost() {
+    private func getPost() {
         if let postId = postId {
             NetworkManager.shared.fetch(from: .getPost(id: postId)) { (result : Result<PostDetail, ErrorMessage>) in
                 switch result {
@@ -43,7 +43,7 @@ class DetailsVC: UIViewController {
         }
     }
     
-    func updateContent(post: PostFull) {
+    private func updateContent(post: PostFull) {
         if let url = URL(string: post.postImage) {
             let data = try? Data(contentsOf: url)
             self.postImage.image = UIImage(data: data!)

@@ -17,5 +17,6 @@ struct PostPreview: Decodable {
     let title: String
     let preview_text: String
     let likes_count: Int
-    var isExpanded: Bool? = false
+    var isExpanded: Bool?
+    var isHaveButton: Bool?
 }

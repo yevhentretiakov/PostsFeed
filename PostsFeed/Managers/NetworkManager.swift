@@ -58,7 +58,6 @@ final class NetworkManager {
     static let shared = NetworkManager()
     
     func fetch<T: Decodable>(from endpoint: ApiEndpoint, completed: @escaping (Result<T, ErrorMessage>) -> Void) {
-        
         // Create URL
         guard let url = URL(string: endpoint.url) else {
             completed(.failure(.unableToComplete))
